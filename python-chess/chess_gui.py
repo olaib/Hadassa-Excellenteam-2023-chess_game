@@ -19,6 +19,7 @@ MAX_FPS = 15  # FPS for animations
 IMAGES = {}  # images for the chess pieces
 colors = [py.Color("white"), py.Color("gray")]
 
+
 # TODO: AI black has been worked on. Mirror progress for other two modes
 def load_images():
     '''
@@ -111,7 +112,7 @@ def main():
     py.init()
     screen = py.display.set_mode((WIDTH, HEIGHT))
     clock = py.time.Clock()
-    game_state = chess_engine.game_state()
+    chess_engine.game_state()
     load_images()
     running = True
     square_selected = ()  # keeps track of the last selected square
