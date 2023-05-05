@@ -9,7 +9,8 @@
 import chess_engine
 from enums import Player
 
-# added by me
+# @added by me
+# instead of using if statements to check for the piece type, using a dictionary to get the value of each piece
 PIECE_VALUES = {
     "k": {"white": 1000, "black": -1000},
     "q": {"white": 100, "black": -100},
