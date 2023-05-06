@@ -5,7 +5,7 @@ import numpy as np
 
 from chess_engine import game_state as Game
 from enums import Player
-from Piece import Knight, Pawn
+from Piece import Knight, Pawn, Piece, Bishop
 
 
 def game_with_empty_board() -> Game:
@@ -92,3 +92,48 @@ class TestGame(unittest.TestCase):
             expected_res = []
             self.assertEqual(knight.get_valid_piece_takes(game), expected_res)
             mock_get_valid_piece_takes.assert_called_once()
+
+    def test_get_valid_piece_moves_integration(self):
+        """Integration test case for checking the moves of the Knight"""
+        game_state = game_with_empty_board()
+        board = game_state.board
+        # check if the board is really empty
+        expected_empty = np.full((8, 8), Player.EMPTY, dtype=object)
+        self.assertTrue(np.all(board == expected_empty))
+
+        knight = Knight('n', 0, 1, Player.PLAYER_1)
+        # check the position of the knight
+        self.assertEqual([knight.get_row_number(), knight.get_col_number()], [0, 1])
+
+        board[1][2] = Pawn('p', 1, 2, Player.PLAYER_1)
+        board[1][3] = Pawn('p', 1, 3, Player.PLAYER_1)
+        board[6][0] = Pawn('p', 6, 0, Player.PLAYER_2)
+        board[3][1] = knight
+
+        # check the peaceful moves and the takes of the above pieces
+        self.assertEqual(board[1][2].get_valid_peaceful_moves(game_state), [(2, 2), (3, 2)])
+        self.assertEqual(board[1][2].get_valid_piece_takes(game_state), [])
+        self.assertEqual(board[1][3].get_valid_peaceful_moves(game_state), [(2, 3), (3, 3)])
+        self.assertEqual(board[1][3].get_valid_piece_takes(game_state), [])
+        self.assertEqual(board[6][0].get_valid_peaceful_moves(game_state), [(5, 0), (4, 0)])
+        self.assertEqual(board[6][0].get_valid_piece_takes(game_state), [])
+
+        moves_before = knight.get_valid_piece_moves(game_state)
+        print(moves_before)
+        # todo: why didn't return the expected result? empty list
+        self.assertEqual(set(moves_before), {(2, 0), (2, 2)})
+
+        # Check for valid peaceful moves
+        # todo: fix bug :Knight.get_valid_peaceful_moves() missing 1 required positional argument: 'game_state'
+        # moves_peaceful = Knight.get_valid_peaceful_moves(game_state)
+        # expected_peaceful = {(1, 0), (1, 2), (2, 3), (4, 3), (5, 2), (5, 0)}
+        # self.assertEqual(set(moves_peaceful), expected_peaceful)
+
+        # Check for valid piece takes
+        moves_takes = knight.get_valid_piece_takes(game_state)
+        self.assertEqual(set(moves_takes), {(2, 0)})
+
+        # Check for all valid moves
+        moves_all = knight.get_valid_piece_moves(game_state)
+        expected_all = {(1, 0), (1, 2), (2, 3), (4, 3), (5, 2), (5, 0), (2, 0)}
+        self.assertEqual(set(moves_all), expected_all)
