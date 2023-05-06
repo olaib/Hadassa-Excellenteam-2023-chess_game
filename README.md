@@ -23,8 +23,7 @@
 
 # Running the game
 
-to ensure that we are in the game directory
-
+go to directory:
 ```bash
 cd python-chess
 ```
