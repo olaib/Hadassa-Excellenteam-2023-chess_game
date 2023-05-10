@@ -125,9 +125,9 @@ class TestGame(unittest.TestCase):
 
         # Check for valid peaceful moves
         # todo: fix bug :Knight.get_valid_peaceful_moves() missing 1 required positional argument: 'game_state'
-        # moves_peaceful = Knight.get_valid_peaceful_moves(game_state)
-        # expected_peaceful = {(1, 0), (1, 2), (2, 3), (4, 3), (5, 2), (5, 0)}
-        # self.assertEqual(set(moves_peaceful), expected_peaceful)
+        moves_peaceful = Knight.get_valid_peaceful_moves(game_state)
+        expected_peaceful = {(1, 0), (1, 2), (2, 3), (4, 3), (5, 2), (5, 0)}
+        self.assertEqual(set(moves_peaceful), expected_peaceful)
 
         # Check for valid piece takes
         moves_takes = knight.get_valid_piece_takes(game_state)
